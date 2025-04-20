@@ -1,0 +1,89 @@
+<h3>Product Management</h3>
+
+<form #productForm="ngForm" (ngSubmit)="saveProduct()" class="needs-validation" novalidate>
+
+  <div class="row mb-3 align-items-center">
+    <label for="name" class="col-form-label col-2">Product Name</label>
+    <div class="col-10">
+      <input
+        id="name"
+        type="text"
+        class="form-control"
+        [(ngModel)]="newProduct.name"
+        name="name"
+        required
+        #name="ngModel"
+        [class.is-invalid]="name.invalid && name.touched"
+      />
+      <div *ngIf="name.invalid && name.touched" class="invalid-feedback">
+        Name is required.
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3 align-items-center">
+    <label for="price" class="col-form-label col-2">Price</label>
+    <div class="col-10">
+      <input
+        id="price"
+        type="number"
+        class="form-control"
+        [(ngModel)]="newProduct.price"
+        name="price"
+        required
+        min="0"
+        #price="ngModel"
+        [class.is-invalid]="price.invalid && price.touched"
+      />
+      <div *ngIf="price.invalid && price.touched" class="invalid-feedback">
+        Price must be a positive number.
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3 align-items-center">
+    <label for="description" class="col-form-label col-2">Description</label>
+    <div class="col-10">
+      <input
+        id="description"
+        type="text"
+        class="form-control"
+        [(ngModel)]="newProduct.description"
+        name="description"
+        #description="ngModel"
+      />
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="offset-2 col-10">
+      <button type="submit" class="btn btn-success me-2" [disabled]="productForm.invalid">
+        {{ editingProduct ? 'Update' : 'Create' }}
+      </button>
+      <button *ngIf="editingProduct" type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+    </div>
+  </div>
+</form>
+
+
+<table class="table table-bordered">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Price</th>
+    <th>Description</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let product of products">
+    <td>{{ product.name }}</td>
+    <td>{{ product.price }}</td>
+    <td>{{ product.description }}</td>
+    <td>
+      <button class="btn btn-sm btn-primary me-2" (click)="editProduct(product)">Edit</button>
+      <button class="btn btn-sm btn-danger" (click)="deleteProduct(product.id!)">Delete</button>
+    </td>
+  </tr>
+  </tbody>
+</table>

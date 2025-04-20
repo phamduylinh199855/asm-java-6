@@ -1,0 +1,38 @@
+<h3>User Management</h3>
+
+<form (ngSubmit)="saveUser()" class="mb-3">
+  <input class="form-control mb-2" [(ngModel)]="newUser.username" name="username" placeholder="Username" required>
+  <input class="form-control mb-2" [(ngModel)]="newUser.password" name="password" placeholder="Password"
+         [required]="!editingUser">
+
+  <label class="form-label">Roles:</label>
+  <div class="form-check" *ngFor="let role of ['USER', 'ADMIN']">
+    <input type="checkbox" class="form-check-input"
+           [checked]="newUser.roles.includes(role)"
+           (change)="toggleRole(role)"/>
+    <label class="form-check-label">{{ role }}</label>
+  </div>
+
+  <button class="btn btn-success mt-2" type="submit">{{ editingUser ? 'Update' : 'Create' }}</button>
+  <button *ngIf="editingUser" type="button" class="btn btn-secondary mt-2 ms-2" (click)="cancelEdit()">Cancel</button>
+</form>
+
+<table class="table table-bordered">
+  <thead>
+  <tr>
+    <th>Username</th>
+    <th>Roles</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let user of users">
+    <td>{{ user.username }}</td>
+    <td>{{ user.roles.join(', ') }}</td>
+    <td>
+      <button class="btn btn-sm btn-primary me-2" (click)="editUser(user)">Edit</button>
+      <button class="btn btn-sm btn-danger" (click)="deleteUser(user.id!)">Delete</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
